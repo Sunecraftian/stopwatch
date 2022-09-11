@@ -42,35 +42,35 @@
    <children>
       <AnchorPane prefHeight="200.0" prefWidth="400.0" style="-fx-background-color: #2a2a2a;">
          <children>
-            <Label fx:id="stopButton" alignment="CENTER" layoutX="80.0" layoutY="276.0" onMouseClicked="#onStopTime" prefHeight="30.0" prefWidth="80.0" style="-fx-background-color: #ac0000; -fx-background-radius: 10; -fx-padding: 5;" text="Stop">
+            <Label fx:id="stopButton" alignment="CENTER" layoutX="67.0" layoutY="276.0" onMouseClicked="#onStopTime" prefHeight="30.0" prefWidth="80.0" style="-fx-background-color: #ac0000; -fx-background-radius: 10; -fx-padding: 5;" text="Stop">
                <font>
                   <Font name="Century Gothic" size="20.0" />
                </font>
             </Label>
-            <Label fx:id="startButton" alignment="CENTER" layoutX="80.0" layoutY="276.0" onMouseClicked="#onStartTime" prefHeight="30.0" prefWidth="80.0" style="-fx-background-color: #00ac00; -fx-background-radius: 10; -fx-padding: 5;" text="Start">
+            <Label fx:id="startButton" alignment="CENTER" layoutX="67.0" layoutY="276.0" onMouseClicked="#onStartTime" prefHeight="30.0" prefWidth="80.0" style="-fx-background-color: #00ac00; -fx-background-radius: 10; -fx-padding: 5;" text="Start">
                <font>
                   <Font name="Century Gothic" size="20.0" />
                </font>
             </Label>
-            <Label fx:id="lapButton" alignment="CENTER" layoutX="240.0" layoutY="276.0" onMouseClicked="#onLapTime" prefHeight="30.0" prefWidth="80.0" style="-fx-background-color: #acac00; -fx-background-radius: 10; -fx-padding: 5;" text="Lap">
+            <Label fx:id="lapButton" alignment="CENTER" layoutX="227.0" layoutY="276.0" onMouseClicked="#onLapTime" prefHeight="30.0" prefWidth="80.0" style="-fx-background-color: #acac00; -fx-background-radius: 10; -fx-padding: 5;" text="Lap">
                <font>
                   <Font name="Century Gothic" size="20.0" />
                </font>
             </Label>
-            <Label fx:id="resetButton" alignment="CENTER" layoutX="160.0" layoutY="339.5" onMouseClicked="#onResetTime" prefHeight="30.0" prefWidth="80.0" style="-fx-background-color: #ac00ac; -fx-background-radius: 10; -fx-padding: 5;" text="Reset">
+            <Label fx:id="resetButton" alignment="CENTER" layoutX="147.0" layoutY="338.0" onMouseClicked="#onResetTime" prefHeight="30.0" prefWidth="80.0" style="-fx-background-color: #ac00ac; -fx-background-radius: 10; -fx-padding: 5;" text="Reset">
                <font>
                   <Font name="Century Gothic" size="20.0" />
                </font>
             </Label>
-            <Label fx:id="timeDisplay" alignment="CENTER" layoutX="80.0" layoutY="96.0" prefHeight="120.0" prefWidth="240.0" style="-fx-background-color: white; -fx-background-radius: 12;" text="03:22:36:052">
+            <Label fx:id="timeDisplay" alignment="CENTER" layoutX="67.0" layoutY="96.0" prefHeight="120.0" prefWidth="240.0" style="-fx-background-color: white; -fx-background-radius: 12;" text="03:22:36:052">
                <font>
                   <Font name="Century Gothic" size="32.0" />
                </font>
             </Label>
          </children></AnchorPane>
-      <AnchorPane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #3d3d3c;">
+      <AnchorPane prefHeight="400.0" prefWidth="250.0" style="-fx-background-color: #3d3d3c;">
          <children>
-            <ListView editable="true" layoutX="7.0" layoutY="72.0" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: white;" AnchorPane.rightAnchor="0.19999999999998863" />
+            <ListView fx:id="lapList" editable="true" layoutX="7.0" layoutY="72.0" prefHeight="220.0" prefWidth="226.0" style="-fx-background-color: white;" AnchorPane.rightAnchor="0.0" />
          </children>
       </AnchorPane>
    </children>

@@ -6,34 +6,32 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
 import javafx.stage.Stage;
 
-/* 
- * PP 23. Design and implement an application that works as a stopwatch. Include a display that shows the 
-time (in seconds) as it increments. Include buttons that allow the user to start and stop the time, and 
-reset the display to zero. Arrange the components to present a nice interface. Hint: use the Timer class 
-to control the timing of the stopwatch.
- * 
- * 
- */
-
 public class App extends Application implements Runnable{
+    // JavaFX components
     private static Scene scene;
     static String fxmlFile;
     static FXMLLoader fxmlLoader;
 
     public Label startButton, stopButton, lapButton, resetButton, timeDisplay;
+    public ListView<String> lapList;
 
+    // Thread
     Thread t;
 
-    boolean stopwatchActive = false;
+    // Variables
     boolean stopwatchReset = true;
+    String[] lapTimes = new String[1000];
+    int lapCount = 1, 
+        ms = 0,
+        sec = 0, 
+        min = 0, 
+        hr = 0; 
 
-    long startTime, stopTime, downTime;
-    long[] lapTimes = new long[100];
-    int lapCount, hr, min, sec, ms;
-
-
+    
+    // JavaFX start method
     @Override
     public void start(Stage stage) throws IOException {
         stage.setTitle("Stopwatch");
@@ -50,74 +48,109 @@ public class App extends Application implements Runnable{
     }
 
 
+    // Thread run method
     @Override
     public void run() {
-        while (stopwatchActive) {
-            ms = (int) (System.currentTimeMillis() - startTime);
-            hr = ms / 3600000;
-            min = (ms % 3600000) / 60000;
-            sec = ((ms % 3600000) % 60000) / 1000;
-            ms = ((ms % 3600000) % 60000) % 1000;
-            Platform.runLater(() -> timeDisplay.setText(String.format("%02d:%02d:%02d:%03d", hr, min, sec, ms)));
-            System.out.println(hr + ":" + min + ":" + sec + ":" + ms);
+        while (!stopwatchReset) {
             try {
                 Thread.sleep(1);
-            } catch (InterruptedException e) {
-                Thread.currentThread().interrupt();
+                if (ms == 1000) {
+                    ms = 0;
+                    sec++;
+                }
+                if (sec == 60) {
+                    sec = 0;
+                    min++;
+                }
+                if (min == 60) {
+                    min = 0;
+                    hr++;
+                }
+                Platform.runLater(() -> timeDisplay.setText(String.format("%02d:%02d:%02d:%03d", hr, min, sec, ms)));
+            } catch (Exception e) {
+                e.printStackTrace();
+                System.err.println("Error in thread");
             }
-        }
-        while (!stopwatchActive) {
-            downTime = System.currentTimeMillis() - stopTime;
-            
+            ms++;
         }
     }
 
-
-
-
+    // Start button
     public void onStartTime() {
+        stopwatchReset = false;
         startButton.setVisible(false);
         stopButton.setVisible(true);
 
         t = new Thread(App.this);
-        startTime = stopwatchReset ? System.currentTimeMillis() : System.currentTimeMillis() - downTime;
-        stopwatchActive = true;
-        stopwatchReset = false;
         t.setDaemon(true);
         t.start();
-
     
         
     }
 
-    public void onStopTime() throws InterruptedException {
+    // Stop button
+    public void onStopTime() {
+        stopwatchReset = true;
         startButton.setVisible(true);
         stopButton.setVisible(false);
 
-        stopTime = System.currentTimeMillis();
-        stopwatchActive = false;
-        // t.interrupt();
-
-
-
     }
 
+    // Lap button
     public void onLapTime() {
+        lapTimes[lapCount-1] = timeDisplay.getText();
+        if (lapCount == 1) {
+            lapList.getItems().add("Lap " + lapCount + ": " + lapTimes[lapCount-1] + " (Start)");
+        } else {
+            lapList.getItems().add("Lap " + lapCount + ": " + (lapDifference(timeDisplay.getText(), lapTimes[lapCount-2])) + " - " + timeDisplay.getText());
+        }
 
-    }
-
-    public void onResetTime() {
-        stopwatchActive = false;
-        stopwatchReset = true;
-
-        timeDisplay.setText("00:00:00:000");
+        lapList.scrollTo(lapCount-1);
         
-
+        lapCount++;
     }
 
-    
+    // Calculate lap difference
+    String lapDifference(String currTime, String prevLap) {
+        int[] currWatTime = new int[4]; // Current watch time
+        int[] prevLapTime = new int[4]; // Previous lap time
+
+        long currTimeMs = 0, prevLapMs = 0;
+        long difference = 0;
+
+        String[] currWatTimeSplit = currTime.split(":"); 
+        String[] prevLapTimeSplit = prevLap.split(":");
+
+        for (int i = 0; i < 4; i++) {
+            currWatTime[i] = Integer.parseInt(currWatTimeSplit[i]);
+            prevLapTime[i] = Integer.parseInt(prevLapTimeSplit[i]);
+        }
+
+        currTimeMs = currWatTime[0] * 3600000 + currWatTime[1] * 60000 + currWatTime[2] * 1000 + currWatTime[3]; // Convert Current Time to Milliseconds
+        prevLapMs = prevLapTime[0] * 3600000 + prevLapTime[1] * 60000 + prevLapTime[2] * 1000 + prevLapTime[3]; // Convert Previous Lap Time to Milliseconds
+
+        difference = currTimeMs - prevLapMs; // Difference in milliseconds
 
 
+        return String.format("%02d:%02d:%02d:%03d", difference / 3600000, (difference % 3600000) / 60000, (difference % 60000) / 1000, difference % 1000); // Convert Difference to String
+        
+    }
+
+    // Reset button
+    public void onResetTime() {
+        onStopTime(); // Stop the stopwatch and reset the buttons
+
+        lapList.getItems().clear(); // Clear the lap list
+        // Reset the variables
+        lapCount = 1; 
+        ms = 0;
+        sec = 0;
+        min = 0;
+        hr = 0;
+        
+        timeDisplay.setText(String.format("%02d:%02d:%02d:%03d", hr, min, sec, ms)); // Reset the time display
+
+    }
 
     public static void main(String[] args) {
         launch(args);        
