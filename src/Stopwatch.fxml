@@ -62,7 +62,12 @@
                   <Font name="Century Gothic" size="20.0" />
                </font>
             </Label>
-            <Label fx:id="timeDisplay" alignment="CENTER" layoutX="67.0" layoutY="96.0" prefHeight="120.0" prefWidth="240.0" style="-fx-background-color: white; -fx-background-radius: 12;" text="03:22:36:052">
+            <Label fx:id="timeDisplay" alignment="CENTER" layoutX="67.0" layoutY="96.0" prefHeight="120.0" prefWidth="240.0" style="-fx-background-color: white; -fx-background-radius: 12;" text="00:00:00:000">
+               <font>
+                  <Font name="Century Gothic" size="32.0" />
+               </font>
+            </Label>
+            <Label fx:id="defaultTimeDisplay" alignment="CENTER" layoutX="67.0" layoutY="96.0" prefHeight="120.0" prefWidth="240.0" style="-fx-background-color: white; -fx-background-radius: 12;" text="00:00:00:000">
                <font>
                   <Font name="Century Gothic" size="32.0" />
                </font>

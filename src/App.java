@@ -15,7 +15,7 @@ public class App extends Application implements Runnable{
     static String fxmlFile;
     static FXMLLoader fxmlLoader;
 
-    public Label startButton, stopButton, lapButton, resetButton, timeDisplay;
+    public Label startButton, stopButton, lapButton, resetButton, timeDisplay, defaultTimeDisplay;
     public ListView<String> lapList;
 
     // Thread
@@ -80,6 +80,7 @@ public class App extends Application implements Runnable{
         stopwatchReset = false;
         startButton.setVisible(false);
         stopButton.setVisible(true);
+        defaultTimeDisplay.setVisible(false);
 
         t = new Thread(App.this);
         t.setDaemon(true);
@@ -100,7 +101,7 @@ public class App extends Application implements Runnable{
     public void onLapTime() {
         lapTimes[lapCount-1] = timeDisplay.getText();
         if (lapCount == 1) {
-            lapList.getItems().add("Lap " + lapCount + ": " + lapTimes[lapCount-1] + " (Start)");
+            lapList.getItems().add("Lap " + lapCount + ": " + lapTimes[lapCount-1] + " - " + timeDisplay.getText());
         } else {
             lapList.getItems().add("Lap " + lapCount + ": " + (lapDifference(timeDisplay.getText(), lapTimes[lapCount-2])) + " - " + timeDisplay.getText());
         }
@@ -139,6 +140,7 @@ public class App extends Application implements Runnable{
     // Reset button
     public void onResetTime() {
         onStopTime(); // Stop the stopwatch and reset the buttons
+        defaultTimeDisplay.setVisible(true);
 
         lapList.getItems().clear(); // Clear the lap list
         // Reset the variables
